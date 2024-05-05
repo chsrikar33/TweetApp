@@ -1,0 +1,28 @@
+.tweet {
+    border: solid #000;
+    border-width: 0.5mm;
+    border-radius: 12px;
+    margin: 10px 0px;
+    display: block;
+    background-color:aliceblue;
+}
+
+.tweet-control1 {
+    margin-left: 1mm;
+    font-size: medium;
+    font-weight: lighter;
+    padding-right: 10px;
+}
+
+.tweet-control2 {
+    margin-left: 1mm;
+    font-size: medium;
+    font-style: italic;
+    font-weight: lighter;
+    padding-right: 1cm;
+}
+
+.tweet-control3 {
+    margin-left: 1mm;
+    font-size: large;
+}
