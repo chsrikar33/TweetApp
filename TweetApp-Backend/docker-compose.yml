@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+  
+  tweetapp:
+      image: srikar33/tweetapp:0.0.1-SNAPSHOT
+      container_name: tweetapp
+      environment:
+        - SPRING_PROFILES_ACTIVE=docker
+      ports:
+        - "8090:8090"
+      networks:
+        - eshopnetwork
+      deploy:
+          restart_policy:
+                  condition: on-failure
+      depends_on:
+        - mysql-service
+      links:
+        - mysql-service
+  mysql-service:
+      image: mysql:8.0.26
+      cap_add:
+        - SYS_NICE
+      container_name: mysql-service
+      ports:
+        - "33000:3306"
+      networks:
+        - eshopnetwork
+      environment:
+        - MYSQL_ROOT_PASSWORD=Srikar@14
+        - MYSQL_DATABASE=bootdb 
+
+  frontend:
+    build:
+      context: C:/Users/srikar/tweet-app 
+    image: react:latest
+    container_name: react
+    ports:
+      - "3000:3000"
+    networks:
+        - eshopnetwork
+    depends_on:
+        - tweetapp
+    command: npm start
+  
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: Zookeeper
+    ports:
+    - "2181:2181"
+    networks:
+      - eshopnetwork
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+    - "9092:9092"
+    networks:
+      - eshopnetwork
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+ 
+    depends_on:
+    - zookeeper
+      
+networks:
+  eshopnetwork: 
+      driver: bridge
+       
